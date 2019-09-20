@@ -11,12 +11,12 @@ public class DispatcherView extends ViewTemplate {
     public void run() {
         while (true) {
             page();
-            switch (Console.inputLine()) {
+            switch (Console.input()) {
                 case "1":
                     new TicketPurchaseView();
                     break;
                 case "2":
-
+                    new TicketReturnView();
                     break;
                 case "exit":
                     Console.close();
