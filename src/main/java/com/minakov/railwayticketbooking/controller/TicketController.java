@@ -28,7 +28,11 @@ public class TicketController {
         return ticketService.findAll();
     }
 
-    public Ticket create(Ticket ticket) throws WagonNotFoundException {
+    public Ticket create(Ticket ticket) throws WagonNotFoundException, TicketNotFoundException {
         return ticketService.create(ticket);
+    }
+
+    public Ticket update(Ticket ticket) {
+        return ticketService.update(ticket);
     }
 }
