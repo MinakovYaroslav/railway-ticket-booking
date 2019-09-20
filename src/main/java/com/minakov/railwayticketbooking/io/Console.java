@@ -6,7 +6,7 @@ public class Console {
 
     private static Scanner s = new Scanner(System.in);
 
-    public static String inputLine() {
+    public static String input() {
         return s.nextLine();
     }
 
@@ -14,9 +14,5 @@ public class Console {
         if (s != null) {
             s.close();
         }
-    }
-
-    public static Long inputLong() {
-        return s.nextLong();
     }
 }
