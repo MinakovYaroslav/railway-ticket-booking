@@ -2,14 +2,18 @@ package com.minakov.railwayticketbooking.exception;
 
 public class TicketNotFoundException extends Throwable {
 
-    private Long ticketId;
+    private String message;
 
     public TicketNotFoundException(Long ticketId) {
-        this.ticketId = ticketId;
+        this.message = "Ticket with id " + ticketId + " not found";
+    }
+
+    public TicketNotFoundException(String message) {
+        this.message = message;
     }
 
     @Override
     public String toString() {
-        return "Ticket with id " + ticketId + " not found";
+        return message;
     }
 }
