@@ -10,15 +10,14 @@ import com.minakov.railwayticketbooking.repository.WagonRepository;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TicketRepositoryImpl implements TicketRepository {
+import static com.minakov.railwayticketbooking.config.DateFormatConfig.dateFormat;
 
-    private static final String DATE_FORMAT = "dd-MMM-yyyy HH:mm:ss";
+public class TicketRepositoryImpl implements TicketRepository {
 
     private WagonRepository wagonRepository;
 
@@ -72,14 +71,14 @@ public class TicketRepositoryImpl implements TicketRepository {
                 seatType = WagonType.valueOf(data[6]);
                 price = BigDecimal.valueOf(Long.parseLong(data[7]));
                 try {
-                    orderDate = new SimpleDateFormat(DATE_FORMAT).parse(data[8]);
+                    orderDate = dateFormat.parse(data[8]);
                 } catch (ParseException e) {
                     e.printStackTrace();
                     orderDate = null;
                 }
                 status = TicketStatus.valueOf(data[9]);
                 try {
-                    returnDate = new SimpleDateFormat(DATE_FORMAT).parse(data[8]);
+                    returnDate = dateFormat.parse(data[8]);
                 } catch (ParseException e) {
                     e.printStackTrace();
                     returnDate = null;
@@ -113,9 +112,9 @@ public class TicketRepositoryImpl implements TicketRepository {
                         String.valueOf(ticket.getWagon().getId()),
                         String.valueOf(ticket.getSeatType()),
                         String.valueOf(ticket.getPrice()),
-                        String.valueOf(ticket.getOrderDate()),
+                        dateFormat.format(ticket.getOrderDate()),
                         String.valueOf(ticket.getStatus()),
-                        String.valueOf(ticket.getReturnDate())
+                        ticket.getReturnDate() == null ? String.valueOf(ticket.getReturnDate()) : dateFormat.format(ticket.getReturnDate())
                 })
                 .collect(Collectors.toList());
         IOUtil.write(data, FilePaths.TICKETS.get());
@@ -124,15 +123,20 @@ public class TicketRepositoryImpl implements TicketRepository {
     @Override
     public Ticket create(Ticket ticket) {
         tickets.add(ticket);
+        objToFile(tickets);
+        return ticket;
+    }
+
+    @Override
+    public Ticket update(Ticket ticket) {
+        Ticket old = findById(ticket.getId());
+        int index = tickets.indexOf(old);
+        tickets.set(index, ticket);
+        objToFile(tickets);
         return ticket;
     }
 
     @Override
     public void delete(Long id) {
-    }
-
-    @Override
-    public Ticket update(Ticket ticket) {
-        return null;
     }
 }
