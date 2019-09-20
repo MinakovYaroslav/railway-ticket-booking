@@ -8,14 +8,13 @@ import com.minakov.railwayticketbooking.repository.RouteRepository;
 import com.minakov.railwayticketbooking.repository.StationRepository;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class RouteRepositoryImpl implements RouteRepository {
+import static com.minakov.railwayticketbooking.config.DateFormatConfig.dateFormat;
 
-    private static final String DATE_FORMAT = "dd-MMM-yyyy HH:mm:ss";
+public class RouteRepositoryImpl implements RouteRepository {
 
     private StationRepository stationRepository;
 
@@ -50,14 +49,14 @@ public class RouteRepositoryImpl implements RouteRepository {
             id = Long.valueOf(data[0]);
             origin = stationRepository.findById(Long.valueOf(data[1]));
             try {
-                departureDate = new SimpleDateFormat(DATE_FORMAT).parse(data[2]);
+                departureDate = dateFormat.parse(data[2]);
             } catch (ParseException e) {
                 e.printStackTrace();
                 departureDate = null;
             }
             destination = stationRepository.findById(Long.valueOf(data[3]));
             try {
-                arrivalDate = new SimpleDateFormat(DATE_FORMAT).parse(data[4]);
+                arrivalDate = dateFormat.parse(data[4]);
             } catch (ParseException e) {
                 e.printStackTrace();
                 arrivalDate = null;
