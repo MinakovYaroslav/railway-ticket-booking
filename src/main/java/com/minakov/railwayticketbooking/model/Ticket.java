@@ -75,17 +75,12 @@ public class Ticket extends AbstractIdentifiable {
 
     public Date getReturnDate() { return returnDate; }
 
-    @Override
-    public String toString() {
-        return "Ticket id: " + getId() + "\n" +
-                "First name: " + firstName + "\n" +
-                "Last name: " + firstName + "\n" +
-                cruise + "\n" +
-                "Train number: " + train.getId() + "\n" +
-                "Wagon number: " + wagon.getId() + "\n" +
-                "Seat type: " + seatType + "\n" +
-                "Price: " + price + "\n" +
-                "Order date: " + orderDate;
+    public void setStatus(TicketStatus status) {
+        this.status = status;
+    }
+
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
     }
 
     public static class TicketBuilder {
