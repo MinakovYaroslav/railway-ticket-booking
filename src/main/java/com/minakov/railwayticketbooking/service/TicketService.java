@@ -1,5 +1,6 @@
 package com.minakov.railwayticketbooking.service;
 
+import com.minakov.railwayticketbooking.exception.TicketNotFoundException;
 import com.minakov.railwayticketbooking.exception.WagonNotFoundException;
 import com.minakov.railwayticketbooking.model.Ticket;
 
@@ -11,5 +12,7 @@ public interface TicketService {
 
     List<Ticket> findAll();
 
-    Ticket create(Ticket ticket) throws WagonNotFoundException;
+    Ticket create(Ticket ticket) throws WagonNotFoundException, TicketNotFoundException;
+
+    Ticket update(Ticket ticket);
 }
