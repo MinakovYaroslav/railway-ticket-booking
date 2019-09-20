@@ -29,10 +29,4 @@ public class Cruise extends AbstractIdentifiable {
     public void setTrain(Train train) {
         this.train = train;
     }
-
-    @Override
-    public String toString() {
-        return getId() + "." + " " + route.getDepartureDate() + " " + route.getOrigin().getName() +
-                " - " + route.getDestination().getName() + " " + route.getArrivalDate();
-    }
 }
