@@ -11,8 +11,6 @@ import java.util.stream.Collectors;
 
 public class WagonRepositoryImpl implements WagonRepository {
 
-    private static final String FILE_PATH = "";
-
     private List<Wagon> wagons;
 
     public WagonRepositoryImpl() {
@@ -52,6 +50,24 @@ public class WagonRepositoryImpl implements WagonRepository {
 
     @Override
     public Wagon update(Wagon wagon) {
-        return null;
+        Wagon old = findById(wagon.getId());
+        int index = wagons.indexOf(old);
+        wagons.set(index, wagon);
+        objToFile(wagons);
+        return wagon;
     }
+
+    private void objToFile(List<Wagon> wagons) {
+        List<String[]> data = wagons.stream()
+                .map(wagon -> new String[]{
+                        String.valueOf(wagon.getId()),
+                        String.valueOf(wagon.getTotalSeatsNumber()),
+                        String.valueOf(wagon.getOccupiedSeatNumber()),
+                        String.valueOf(wagon.getType())
+                })
+                .collect(Collectors.toList());
+        IOUtil.write(data, FilePaths.WAGONS.get());
+    }
+
+
 }
