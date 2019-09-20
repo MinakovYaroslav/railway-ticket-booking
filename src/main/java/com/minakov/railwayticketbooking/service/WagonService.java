@@ -9,4 +9,6 @@ public interface WagonService {
     Wagon findById(Long id);
 
     List<Wagon> findAll();
+
+    Wagon update(Wagon wagon);
 }
