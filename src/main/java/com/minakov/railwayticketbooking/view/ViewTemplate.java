@@ -10,15 +10,14 @@ public abstract class ViewTemplate {
 
     private void header() {
         System.out.println();
-        System.out.println("===========Railway Ticket Booking===========");
-        System.out.println("=======Type back to return main menu========");;
+        System.out.println("========== Railway Ticket Booking ==========");
         System.out.println("============================================");
     }
 
     private void footer() {
         System.out.println("============================================");
-        System.out.println("=======Type exit to close application=======");
-        System.out.println("============================================");
+        System.out.println("====== Type exit to close application ======");
+        System.out.println();
     }
 
     public abstract void content();
