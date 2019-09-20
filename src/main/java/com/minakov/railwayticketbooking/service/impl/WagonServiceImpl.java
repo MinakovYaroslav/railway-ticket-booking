@@ -25,4 +25,9 @@ public class WagonServiceImpl implements WagonService {
     public List<Wagon> findAll() {
         return repository.findAll();
     }
+
+    @Override
+    public Wagon update(Wagon wagon) {
+        return repository.update(wagon);
+    }
 }
