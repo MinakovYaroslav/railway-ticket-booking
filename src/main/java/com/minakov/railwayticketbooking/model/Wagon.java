@@ -1,6 +1,10 @@
 package com.minakov.railwayticketbooking.model;
 
+import java.util.UUID;
+
 public class Wagon extends AbstractIdentifiable {
+
+    private int positionNumber;
 
     private int totalSeatsNumber;
 
@@ -8,14 +12,20 @@ public class Wagon extends AbstractIdentifiable {
 
     private WagonType type;
 
-    public Wagon(Long id, int totalSeatsNumber, int occupiedSeatNumber, WagonType type) {
+    public Wagon(UUID id, int positionNumber, int totalSeatsNumber, int occupiedSeatNumber, WagonType type) {
         super(id);
+        this.positionNumber = positionNumber;
         this.totalSeatsNumber = totalSeatsNumber;
         this.occupiedSeatNumber = occupiedSeatNumber;
         this.type = type;
     }
 
-    public Wagon() {
+    public int getPositionNumber() {
+        return positionNumber;
+    }
+
+    public void setPositionNumber(int positionNumber) {
+        this.positionNumber = positionNumber;
     }
 
     public int getTotalSeatsNumber() {
