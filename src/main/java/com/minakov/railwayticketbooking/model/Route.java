@@ -1,6 +1,7 @@
 package com.minakov.railwayticketbooking.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Route extends AbstractIdentifiable {
 
@@ -12,7 +13,7 @@ public class Route extends AbstractIdentifiable {
 
     private Date arrivalDate;
 
-    public Route(Long id, Station origin, Date departureDate, Station destination, Date arrivalDate) {
+    public Route(UUID id, Station origin, Date departureDate, Station destination, Date arrivalDate) {
         super(id);
         this.origin = origin;
         this.departureDate = departureDate;
