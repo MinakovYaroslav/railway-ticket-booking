@@ -1,6 +1,6 @@
 package com.minakov.railwayticketbooking.model;
 
-import java.util.Map;
+import java.util.UUID;
 
 public class Cruise extends AbstractIdentifiable {
 
@@ -8,7 +8,7 @@ public class Cruise extends AbstractIdentifiable {
 
     private Train train;
 
-    public Cruise(Long id, Route route, Train train) {
+    public Cruise(UUID id, Route route, Train train) {
         super(id);
         this.route = route;
         this.train = train;
