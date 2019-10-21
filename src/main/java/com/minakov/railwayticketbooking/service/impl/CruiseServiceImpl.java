@@ -2,10 +2,11 @@ package com.minakov.railwayticketbooking.service.impl;
 
 import com.minakov.railwayticketbooking.model.Cruise;
 import com.minakov.railwayticketbooking.repository.CruiseRepository;
-import com.minakov.railwayticketbooking.repository.impl.CruiseRepositoryImpl;
+import com.minakov.railwayticketbooking.repository.localfile.CruiseRepositoryImpl;
 import com.minakov.railwayticketbooking.service.CruiseService;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CruiseServiceImpl implements CruiseService {
 
@@ -16,7 +17,7 @@ public class CruiseServiceImpl implements CruiseService {
     }
 
     @Override
-    public Cruise findById(Long id) {
+    public Cruise findById(UUID id) {
         return repository.findById(id);
     }
 
