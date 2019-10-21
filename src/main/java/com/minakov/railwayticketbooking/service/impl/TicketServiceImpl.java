@@ -4,15 +4,12 @@ import com.minakov.railwayticketbooking.exception.TicketNotFoundException;
 import com.minakov.railwayticketbooking.exception.WagonNotFoundException;
 import com.minakov.railwayticketbooking.model.*;
 import com.minakov.railwayticketbooking.repository.TicketRepository;
-import com.minakov.railwayticketbooking.repository.impl.TicketRepositoryImpl;
+import com.minakov.railwayticketbooking.repository.localfile.TicketRepositoryImpl;
 import com.minakov.railwayticketbooking.service.TicketService;
 import com.minakov.railwayticketbooking.service.WagonService;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class TicketServiceImpl implements TicketService {
 
@@ -25,7 +22,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket findById(Long id) {
+    public Ticket findById(UUID id) {
         return ticketRepository.findById(id);
     }
 
@@ -36,17 +33,11 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket create(Ticket ticket) throws WagonNotFoundException, TicketNotFoundException {
-        Long id;
         Wagon wagon;
         BigDecimal price;
         Date orderDate;
         TicketStatus status;
         WagonType seatType = ticket.getSeatType();
-
-        id = ticketRepository.findAll().stream()
-                .mapToLong(AbstractIdentifiable::getId)
-                .max()
-                .orElse(0);
 
         wagon = ticket.getTrain().getWagons().stream()
                 .filter(w -> w.getType().equals(seatType))
@@ -64,9 +55,7 @@ public class TicketServiceImpl implements TicketService {
 
 
         return ticketRepository.create(new Ticket.TicketBuilder()
-                .setId(++id)
-                .setFirstName(ticket.getFirstName())
-                .setLastName(ticket.getLastName())
+                .setUser(ticket.getUser())
                 .setCruise(ticket.getCruise())
                 .setTrain(ticket.getTrain())
                 .setWagon(wagon)
