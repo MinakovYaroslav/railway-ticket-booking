@@ -1,4 +1,4 @@
-package com.minakov.railwayticketbooking.repository.impl;
+package com.minakov.railwayticketbooking.repository.localfile;
 
 import com.minakov.railwayticketbooking.io.FilePaths;
 import com.minakov.railwayticketbooking.io.IOUtil;
@@ -11,6 +11,8 @@ import com.minakov.railwayticketbooking.repository.TrainRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CruiseRepositoryImpl implements CruiseRepository {
 
@@ -27,7 +29,7 @@ public class CruiseRepositoryImpl implements CruiseRepository {
     }
 
     @Override
-    public Cruise findById(Long id) {
+    public Cruise findById(UUID id) {
         return cruises.stream()
                 .filter(cruise -> cruise.getId().equals(id))
                 .findAny()
@@ -41,25 +43,38 @@ public class CruiseRepositoryImpl implements CruiseRepository {
 
     private List<Cruise> cruises() {
         List<Cruise> cruises = new ArrayList<>();
-        Long id;
+        UUID id;
         Route route;
         Train train;
         for (String[] data : IOUtil.read(FilePaths.CRUISES.get())) {
-            id = Long.valueOf(data[0]);
-            route = routeRepository.findById(Long.valueOf(data[1]));
-            train = trainRepository.findById(Long.valueOf(data[2]));
+            id = UUID.fromString(data[0]);
+            route = routeRepository.findById(UUID.fromString(data[1]));
+            train = trainRepository.findById(UUID.fromString(data[2]));
             cruises.add(new Cruise(id, route, train));
         }
         return cruises;
     }
 
+    private void objToFile(List<Cruise> cruises) {
+        List<String[]> data = cruises.stream()
+                .map(cruise -> new String[]{
+                        String.valueOf(cruise.getId()),
+                        String.valueOf(cruise.getRoute().getId()),
+                        String.valueOf(cruise.getTrain().getId())
+                })
+                .collect(Collectors.toList());
+        IOUtil.write(data, FilePaths.CRUISES.get());
+    }
+
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
     }
 
     @Override
     public Cruise create(Cruise cruise) {
-        return null;
+        cruises.add(cruise);
+        objToFile(cruises);
+        return cruise;
     }
 
     @Override

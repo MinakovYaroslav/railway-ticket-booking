@@ -1,4 +1,4 @@
-package com.minakov.railwayticketbooking.repository.impl;
+package com.minakov.railwayticketbooking.repository.localfile;
 
 import com.minakov.railwayticketbooking.io.FilePaths;
 import com.minakov.railwayticketbooking.io.IOUtil;
@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.minakov.railwayticketbooking.config.DateFormatConfig.dateFormat;
 
@@ -26,7 +28,7 @@ public class RouteRepositoryImpl implements RouteRepository {
     }
 
     @Override
-    public Route findById(Long id) {
+    public Route findById(UUID id) {
         return routes.stream()
                 .filter(route -> route.getId().equals(id))
                 .findAny()
@@ -40,21 +42,21 @@ public class RouteRepositoryImpl implements RouteRepository {
 
     private List<Route> routes() {
         List<Route> routes = new ArrayList<>();
-        Long id;
+        UUID id;
         Station origin;
         Date departureDate;
         Station destination;
         Date arrivalDate;
         for (String[] data : IOUtil.read(FilePaths.ROUTES.get())) {
-            id = Long.valueOf(data[0]);
-            origin = stationRepository.findById(Long.valueOf(data[1]));
+            id = UUID.fromString(data[0]);
+            origin = stationRepository.findById(UUID.fromString(data[1]));
             try {
                 departureDate = dateFormat.parse(data[2]);
             } catch (ParseException e) {
                 e.printStackTrace();
                 departureDate = null;
             }
-            destination = stationRepository.findById(Long.valueOf(data[3]));
+            destination = stationRepository.findById(UUID.fromString(data[3]));
             try {
                 arrivalDate = dateFormat.parse(data[4]);
             } catch (ParseException e) {
@@ -66,13 +68,28 @@ public class RouteRepositoryImpl implements RouteRepository {
         return routes;
     }
 
+    private void objToFile(List<Route> routes) {
+        List<String[]> data = routes.stream()
+                .map(route -> new String[]{
+                        String.valueOf(route.getId()),
+                        String.valueOf(route.getOrigin().getId()),
+                        dateFormat.format(route.getDepartureDate()),
+                        String.valueOf(route.getDestination().getId()),
+                        dateFormat.format(route.getArrivalDate())
+                })
+                .collect(Collectors.toList());
+        IOUtil.write(data, FilePaths.ROUTES.get());
+    }
+
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
     }
 
     @Override
     public Route create(Route route) {
-        return null;
+        routes.add(route);
+        objToFile(routes);
+        return route;
     }
 
     @Override

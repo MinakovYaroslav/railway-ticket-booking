@@ -1,18 +1,16 @@
-package com.minakov.railwayticketbooking.repository.impl;
+package com.minakov.railwayticketbooking.repository.localfile;
 
 import com.minakov.railwayticketbooking.io.FilePaths;
 import com.minakov.railwayticketbooking.io.IOUtil;
 import com.minakov.railwayticketbooking.model.*;
-import com.minakov.railwayticketbooking.repository.CruiseRepository;
-import com.minakov.railwayticketbooking.repository.TicketRepository;
-import com.minakov.railwayticketbooking.repository.TrainRepository;
-import com.minakov.railwayticketbooking.repository.WagonRepository;
+import com.minakov.railwayticketbooking.repository.*;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.minakov.railwayticketbooking.config.DateFormatConfig.dateFormat;
@@ -25,17 +23,20 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     private CruiseRepository cruiseRepository;
 
+    private UserRepository userRepository;
+
     private List<Ticket> tickets;
 
     public TicketRepositoryImpl() {
         this.wagonRepository = new WagonRepositoryImpl();
         this.trainRepository = new TrainRepositoryImpl();
         this.cruiseRepository = new CruiseRepositoryImpl();
+        this.userRepository = new UserRepositoryImpl();
         this.tickets = activeTickets();
     }
 
     @Override
-    public Ticket findById(Long id) {
+    public Ticket findById(UUID id) {
         return tickets.stream()
                 .filter(ticket -> ticket.getId().equals(id))
                 .findAny()
@@ -49,9 +50,8 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     private List<Ticket> activeTickets() {
         List<Ticket> tickets = new ArrayList<>();
-        Long id;
-        String firstName;
-        String lastName;
+        UUID id;
+        User user;
         Cruise cruise;
         Train train;
         Wagon wagon;
@@ -59,34 +59,25 @@ public class TicketRepositoryImpl implements TicketRepository {
         BigDecimal price;
         Date orderDate;
         TicketStatus status;
-        Date returnDate;
         for (String[] data : IOUtil.read(FilePaths.TICKETS.get())) {
-            if (TicketStatus.valueOf(data[9]).equals(TicketStatus.ACTIVE)) {
-                id = Long.valueOf(data[0]);
-                firstName = data[1];
-                lastName = data[2];
-                cruise = cruiseRepository.findById(Long.valueOf(data[3]));
-                train = trainRepository.findById(Long.valueOf(data[4]));
-                wagon = wagonRepository.findById(Long.valueOf(data[5]));
-                seatType = WagonType.valueOf(data[6]);
-                price = BigDecimal.valueOf(Long.parseLong(data[7]));
+            if (TicketStatus.valueOf(data[8]).equals(TicketStatus.ACTIVE)) {
+                id = UUID.fromString(data[0]);
+                user = userRepository.findById(UUID.fromString(data[1]));
+                cruise = cruiseRepository.findById(UUID.fromString(data[2]));
+                train = trainRepository.findById(UUID.fromString(data[3]));
+                wagon = wagonRepository.findById(UUID.fromString(data[4]));
+                seatType = WagonType.valueOf(data[5]);
+                price = BigDecimal.valueOf(Long.parseLong(data[6]));
                 try {
-                    orderDate = dateFormat.parse(data[8]);
+                    orderDate = dateFormat.parse(data[7]);
                 } catch (ParseException e) {
                     e.printStackTrace();
                     orderDate = null;
                 }
-                status = TicketStatus.valueOf(data[9]);
-                try {
-                    returnDate = dateFormat.parse(data[8]);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    returnDate = null;
-                }
+                status = TicketStatus.valueOf(data[8]);
                 tickets.add(new Ticket.TicketBuilder()
                         .setId(id)
-                        .setFirstName(firstName)
-                        .setLastName(lastName)
+                        .setUser(user)
                         .setCruise(cruise)
                         .setTrain(train)
                         .setWagon(wagon)
@@ -94,7 +85,6 @@ public class TicketRepositoryImpl implements TicketRepository {
                         .setPrice(price)
                         .setOrderDate(orderDate)
                         .setStatus(status)
-                        .setReturnDate(returnDate)
                         .build());
             }
         }
@@ -105,8 +95,7 @@ public class TicketRepositoryImpl implements TicketRepository {
         List<String[]> data = tickets.stream()
                 .map(ticket -> new String[]{
                         String.valueOf(ticket.getId()),
-                        ticket.getFirstName(),
-                        ticket.getLastName(),
+                        String.valueOf(ticket.getUser().getId()),
                         String.valueOf(ticket.getCruise().getId()),
                         String.valueOf(ticket.getTrain().getId()),
                         String.valueOf(ticket.getWagon().getId()),
@@ -122,6 +111,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public Ticket create(Ticket ticket) {
+        ticket.setId(UUID.randomUUID());
         tickets.add(ticket);
         objToFile(tickets);
         return ticket;
@@ -137,6 +127,6 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
     }
 }
