@@ -1,10 +1,12 @@
 package com.minakov.railwayticketbooking.exception;
 
+import java.util.UUID;
+
 public class CruiseNotFoundException extends Throwable {
 
-    private Long cruiseId;
+    private UUID cruiseId;
 
-    public CruiseNotFoundException(Long cruiseId) {
+    public CruiseNotFoundException(UUID cruiseId) {
         this.cruiseId = cruiseId;
     }
 
