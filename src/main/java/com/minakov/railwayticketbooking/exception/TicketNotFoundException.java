@@ -1,10 +1,12 @@
 package com.minakov.railwayticketbooking.exception;
 
+import java.util.UUID;
+
 public class TicketNotFoundException extends Throwable {
 
     private String message;
 
-    public TicketNotFoundException(Long ticketId) {
+    public TicketNotFoundException(UUID ticketId) {
         this.message = "Ticket with id " + ticketId + " not found";
     }
 
