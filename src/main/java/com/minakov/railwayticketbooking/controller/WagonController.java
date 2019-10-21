@@ -6,6 +6,7 @@ import com.minakov.railwayticketbooking.service.WagonService;
 import com.minakov.railwayticketbooking.service.impl.WagonServiceImpl;
 
 import java.util.List;
+import java.util.UUID;
 
 public class WagonController {
 
@@ -15,7 +16,7 @@ public class WagonController {
         this.wagonService = new WagonServiceImpl();
     }
 
-    public Wagon findById(Long id) throws WagonNotFoundException {
+    public Wagon findById(UUID id) throws WagonNotFoundException {
         Wagon wagon = wagonService.findById(id);
         if (wagon == null) {
             throw new WagonNotFoundException(id);

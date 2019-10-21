@@ -6,6 +6,7 @@ import com.minakov.railwayticketbooking.service.TrainService;
 import com.minakov.railwayticketbooking.service.impl.TrainServiceImpl;
 
 import java.util.List;
+import java.util.UUID;
 
 public class TrainController {
 
@@ -15,7 +16,7 @@ public class TrainController {
         this.trainService = new TrainServiceImpl();
     }
 
-    public Train findById(Long id) throws TrainNotFoundException {
+    public Train findById(UUID id) throws TrainNotFoundException {
         Train train = trainService.findById(id);
         if (train == null) {
             throw new TrainNotFoundException(id);
