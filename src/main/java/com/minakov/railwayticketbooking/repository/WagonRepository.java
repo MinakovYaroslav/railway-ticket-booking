@@ -2,8 +2,10 @@ package com.minakov.railwayticketbooking.repository;
 
 import com.minakov.railwayticketbooking.model.Wagon;
 
-public interface WagonRepository extends GenericRepository<Wagon, Long> {
+import java.util.UUID;
+
+public interface WagonRepository extends GenericRepository<Wagon, UUID> {
 
     @Override
-    Wagon findById(Long id);
+    Wagon findById(UUID id);
 }

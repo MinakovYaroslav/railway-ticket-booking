@@ -2,8 +2,10 @@ package com.minakov.railwayticketbooking.repository;
 
 import com.minakov.railwayticketbooking.model.Station;
 
-public interface StationRepository extends GenericRepository<Station, Long> {
+import java.util.UUID;
+
+public interface StationRepository extends GenericRepository<Station, UUID> {
 
     @Override
-    Station findById(Long id);
+    Station findById(UUID id);
 }
