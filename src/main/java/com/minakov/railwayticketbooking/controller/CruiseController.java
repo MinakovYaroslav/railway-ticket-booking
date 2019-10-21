@@ -5,7 +5,9 @@ import com.minakov.railwayticketbooking.model.Cruise;
 import com.minakov.railwayticketbooking.service.CruiseService;
 import com.minakov.railwayticketbooking.service.impl.CruiseServiceImpl;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class CruiseController {
 
@@ -15,7 +17,7 @@ public class CruiseController {
         this.cruiseService = new CruiseServiceImpl();
     }
 
-    public Cruise findById(Long id) throws CruiseNotFoundException {
+    public Cruise findById(UUID id) throws CruiseNotFoundException {
         Cruise cruise = cruiseService.findById(id);
         if (cruise == null) {
             throw new CruiseNotFoundException(id);
@@ -23,7 +25,12 @@ public class CruiseController {
         return cruise;
     }
 
-    public List<Cruise> findAll() {
-        return cruiseService.findAll();
+    public Map<Integer, Cruise> cruiseTab() {
+        int number = 1;
+        Map<Integer, Cruise> cruises = new HashMap<>();
+        for (Cruise cruise : cruiseService.findAll()) {
+            cruises.put(number++, cruise);
+        }
+        return cruises;
     }
 }
