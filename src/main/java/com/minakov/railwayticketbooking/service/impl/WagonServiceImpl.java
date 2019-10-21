@@ -1,12 +1,12 @@
 package com.minakov.railwayticketbooking.service.impl;
 
-import com.minakov.railwayticketbooking.exception.WagonNotFoundException;
 import com.minakov.railwayticketbooking.model.Wagon;
 import com.minakov.railwayticketbooking.repository.WagonRepository;
-import com.minakov.railwayticketbooking.repository.impl.WagonRepositoryImpl;
+import com.minakov.railwayticketbooking.repository.localfile.WagonRepositoryImpl;
 import com.minakov.railwayticketbooking.service.WagonService;
 
 import java.util.List;
+import java.util.UUID;
 
 public class WagonServiceImpl implements WagonService {
 
@@ -17,7 +17,7 @@ public class WagonServiceImpl implements WagonService {
     }
 
     @Override
-    public Wagon findById(Long id) {
+    public Wagon findById(UUID id) {
         return repository.findById(id);
     }
 

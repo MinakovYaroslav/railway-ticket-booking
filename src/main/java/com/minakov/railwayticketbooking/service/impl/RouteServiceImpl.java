@@ -2,10 +2,11 @@ package com.minakov.railwayticketbooking.service.impl;
 
 import com.minakov.railwayticketbooking.model.Route;
 import com.minakov.railwayticketbooking.repository.RouteRepository;
-import com.minakov.railwayticketbooking.repository.impl.RouteRepositoryImpl;
+import com.minakov.railwayticketbooking.repository.localfile.RouteRepositoryImpl;
 import com.minakov.railwayticketbooking.service.RouteService;
 
 import java.util.List;
+import java.util.UUID;
 
 public class RouteServiceImpl implements RouteService {
 
@@ -16,7 +17,7 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public Route findById(Long id) {
+    public Route findById(UUID id) {
         return repository.findById(id);
     }
 
