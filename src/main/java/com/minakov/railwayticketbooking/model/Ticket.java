@@ -2,12 +2,11 @@ package com.minakov.railwayticketbooking.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 public class Ticket extends AbstractIdentifiable {
 
-    private String firstName;
-
-    private String lastName;
+    private User user;
 
     private Cruise cruise;
 
@@ -25,12 +24,12 @@ public class Ticket extends AbstractIdentifiable {
 
     private Date returnDate;
 
-
+    public Ticket() {
+    }
 
     public Ticket(TicketBuilder ticketBuilder) {
         super(ticketBuilder.id);
-        this.firstName = ticketBuilder.firstName;
-        this.lastName = ticketBuilder.lastName;
+        this.user = ticketBuilder.user;
         this.cruise = ticketBuilder.cruise;
         this.train = ticketBuilder.train;
         this.wagon = ticketBuilder.wagon;
@@ -41,10 +40,8 @@ public class Ticket extends AbstractIdentifiable {
         this.returnDate = ticketBuilder.returnDate;
     }
 
-    public String getFirstName() { return firstName; }
-
-    public String getLastName() {
-        return lastName;
+    public User getUser() {
+        return user;
     }
 
     public Cruise getCruise() {
@@ -71,9 +68,13 @@ public class Ticket extends AbstractIdentifiable {
         return orderDate;
     }
 
-    public TicketStatus getStatus() { return status; }
+    public TicketStatus getStatus() {
+        return status;
+    }
 
-    public Date getReturnDate() { return returnDate; }
+    public Date getReturnDate() {
+        return returnDate;
+    }
 
     public void setStatus(TicketStatus status) {
         this.status = status;
@@ -85,11 +86,9 @@ public class Ticket extends AbstractIdentifiable {
 
     public static class TicketBuilder {
 
-        private Long id;
+        private UUID id;
 
-        private String firstName;
-
-        private String lastName;
+        private User user;
 
         private Cruise cruise;
 
@@ -107,18 +106,13 @@ public class Ticket extends AbstractIdentifiable {
 
         private Date returnDate;
 
-        public TicketBuilder setId(Long id) {
+        public TicketBuilder setId(UUID id) {
             this.id = id;
             return this;
         }
 
-        public TicketBuilder setFirstName(String firstName) {
-            this.firstName = firstName;
-            return this;
-        }
-
-        public TicketBuilder setLastName(String lastName) {
-            this.lastName = lastName;
+        public TicketBuilder setUser(User user) {
+            this.user = user;
             return this;
         }
 
