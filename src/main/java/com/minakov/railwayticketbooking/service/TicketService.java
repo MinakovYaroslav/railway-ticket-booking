@@ -5,10 +5,11 @@ import com.minakov.railwayticketbooking.exception.WagonNotFoundException;
 import com.minakov.railwayticketbooking.model.Ticket;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface TicketService {
 
-    Ticket findById(Long id);
+    Ticket findById(UUID id);
 
     List<Ticket> findAll();
 
