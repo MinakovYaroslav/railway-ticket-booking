@@ -1,21 +1,34 @@
 package com.minakov.railwayticketbooking.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import java.util.UUID;
+
+@MappedSuperclass
 public abstract class AbstractIdentifiable {
 
-    private Long id;
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id;
 
-    public AbstractIdentifiable(Long id) {
+    AbstractIdentifiable(UUID id) {
         this.id = id;
     }
 
-    public AbstractIdentifiable() {
+    AbstractIdentifiable() {
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 }
