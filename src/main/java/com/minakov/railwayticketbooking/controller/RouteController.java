@@ -6,6 +6,7 @@ import com.minakov.railwayticketbooking.service.RouteService;
 import com.minakov.railwayticketbooking.service.impl.RouteServiceImpl;
 
 import java.util.List;
+import java.util.UUID;
 
 public class RouteController {
 
@@ -15,7 +16,7 @@ public class RouteController {
         this.routeService = new RouteServiceImpl();
     }
 
-    public Route findById(Long id) throws RouteNotFoundException {
+    public Route findById(UUID id) throws RouteNotFoundException {
         Route route = routeService.findById(id);
         if (route == null) {
             throw new RouteNotFoundException(id);
