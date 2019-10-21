@@ -1,10 +1,12 @@
 package com.minakov.railwayticketbooking.exception;
 
+import java.util.UUID;
+
 public class TrainNotFoundException extends Throwable {
 
-    private Long trainId;
+    private UUID trainId;
 
-    public TrainNotFoundException(Long trainId) {
+    public TrainNotFoundException(UUID trainId) {
         this.trainId = trainId;
     }
 
