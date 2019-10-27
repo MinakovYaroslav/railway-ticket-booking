@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="Create/Update tables" author="Yaroslav Minakov" runOnChange="true">
+
+        <!-- Drop tables if exists -->
+        <sql splitStatements="true">
+            DROP TABLE IF EXISTS "stations" CASCADE;
+        </sql>
+
+        <!-- Create tables -->
+        <createTable tableName="stations">
+            <column name="id" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <!-- Loading of Data -->
+        <loadData file="src/main/resources/stations.txt" tableName="stations" separator=";">
+            <column name="id" type="STRING"/>
+            <column name="name" type="STRING"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>
