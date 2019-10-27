@@ -28,7 +28,10 @@ public class HibernateStationRepositoryImpl implements StationRepository {
             // start a transaction
             transaction = session.beginTransaction();
             // delete the station object
-            session.delete(String.valueOf(id), Station.class);
+            Station station = findById(id);
+            if (station != null) {
+                session.delete(station);
+            }
             // commit transaction
             transaction.commit();
         } catch (Exception e) {
@@ -55,7 +58,7 @@ public class HibernateStationRepositoryImpl implements StationRepository {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start a transaction
             transaction = session.beginTransaction();
-            // save the station objects
+            // save the station object
             session.save(station);
             // commit transaction
             transaction.commit();
@@ -71,6 +74,21 @@ public class HibernateStationRepositoryImpl implements StationRepository {
 
     @Override
     public Station update(Station station) {
-        return null;
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start a transaction
+            transaction = session.beginTransaction();
+            // update the station object
+            session.update(station);
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+
+        return station;
     }
 }
