@@ -5,7 +5,7 @@ GROUP BY cruise_id
 HAVING cruise_id IN (SELECT cruise_id
                      FROM tickets
                      WHERE order_date BETWEEN (MAKEDATE(YEAR(CURDATE()), 1) + INTERVAL QUARTER(CURDATE()) QUARTER -
-                                               INTERVAL 1 QUARTER - INTERVAL 1 DAY)
-                             AND (MAKEDATE(YEAR(CURDATE()), 1) + INTERVAL QUARTER(CURDATE()) QUARTER))
+                                               INTERVAL 1 QUARTER) AND (
+                         MAKEDATE(YEAR(CURDATE()), 1) + INTERVAL QUARTER(CURDATE()) QUARTER - INTERVAL 1 DAY))
 ORDER BY price
 LIMIT 1
