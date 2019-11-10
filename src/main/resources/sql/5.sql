@@ -1,3 +1,4 @@
+# Поиск пассажиров, купивших билеты в указанный пункт назначения, на сумму, больше указанной в запросе, в указанный период времени
 SELECT users.*
 FROM users, tickets, cruises, routes
 GROUP BY tickets.price, users.id, tickets.user_id, tickets.order_date, tickets.cruise_id, cruises.route_id, routes.id, routes.arrival_date, cruises.id
